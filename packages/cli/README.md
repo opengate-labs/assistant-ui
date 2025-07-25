@@ -1,9 +1,11 @@
-# `assistant-ui` CLI
+# OpenGate Labs Assistant UI CLI Fork
 
-This package contains the command line interface for `assistant-ui`.
+**This is part of the OpenGate Labs fork of assistant-ui, with custom components support.**
 
-## Usage
+---
 
-```sh
-npx assistant-ui@latest add
-```
+This package is based on the original assistant-ui CLI. This fork adds support for custom components and may diverge from upstream. Please refer to the original [assistant-ui documentation](https://github.com/assistant-ui/assistant-ui) for general usage, but note that this fork may have additional or different features.
+
+## License
+
+MIT

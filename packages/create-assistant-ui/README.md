@@ -1,9 +1,11 @@
-# `create-assistant-ui`
+# OpenGate Labs create-assistant-ui Fork
 
-This package contains the command line interface for `create-assistant-ui`.
+**This is part of the OpenGate Labs fork of assistant-ui, with custom components support.**
 
-## Usage
+---
 
-```sh
-npm create assistant-ui
-```
+This package is based on the original create-assistant-ui. This fork adds support for custom components and may diverge from upstream. Please refer to the original [assistant-ui documentation](https://github.com/assistant-ui/assistant-ui) for general usage, but note that this fork may have additional or different features.
+
+## License
+
+MIT
