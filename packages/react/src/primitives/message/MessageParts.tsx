@@ -246,15 +246,15 @@ const CustomComponentDisplay = ({
 // Enhanced Text component that detects and renders custom components
 const EnhancedTextComponent = () => {
   const textPart = useMessagePartText();
+  const messagePart = useMessagePart(); // Get the full message part for status
   // useMessagePartText() already validates it's text/reasoning and has .text property
   const text = (textPart as any).text;
+  const status = (messagePart as any).status;
   
-  // Get message context to see the role
-  const message = useMessage();
-  
-  // Debug logging
-  console.log("EnhancedTextComponent - role:", message.role, "text:", text);
-  console.log("EnhancedTextComponent - hasComponentMarkers:", hasComponentMarkers(text));
+  // Map message part status to custom component status
+  const componentStatus = status?.type === "running" 
+    ? { type: "rendering" as const }
+    : { type: "complete" as const };
   
   // Check if text contains component markers
   if (hasComponentMarkers(text)) {
@@ -270,7 +270,7 @@ const EnhancedTextComponent = () => {
                 componentName={part.componentName}
                 props={part.props}
                 originalText={part.originalText}
-                status={{ type: "complete" }}
+                status={componentStatus}
                 Fallback={undefined}
               />
             );
@@ -340,12 +340,10 @@ const MessagePartComponent: FC<MessagePartComponentProps> = ({
   const MessagePartRuntime = useMessagePartRuntime();
 
   const part = useMessagePart();
-  const message = useMessage();
 
   const type = part.type;
   
   // Debug all message parts
-  console.log("MessagePartComponent - role:", message.role, "type:", type, "part:", part);
   if (type === "tool-call") {
     const addResult = (result: any) => MessagePartRuntime.addToolResult(result);
     if ("Override" in tools)
@@ -356,12 +354,16 @@ const MessagePartComponent: FC<MessagePartComponentProps> = ({
 
   if (type === "custom-component") {
     const CustomComponent = custom_components.by_name?.[part.componentName] ?? custom_components.Fallback;
+    // Map message part status to custom component status
+    const componentStatus = (part as any).status?.type === "running" 
+      ? { type: "rendering" as const }
+      : { type: "complete" as const };
     return (
       <CustomComponentDisplay 
         componentName={part.componentName}
         props={part.props}
         originalText={part.originalText}
-        status={{ type: "complete" }}
+        status={componentStatus}
         Fallback={CustomComponent}
       />
     );

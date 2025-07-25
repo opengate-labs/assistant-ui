@@ -79,8 +79,6 @@ export const parseComponentMarkers = (text: string): ThreadAssistantMessagePart[
  */
 export const hasComponentMarkers = (text: string): boolean => {
   const result = /\[COMPONENT:\w+\].*?\[\/COMPONENT\]/s.test(text);
-  console.log("hasComponentMarkers - text:", JSON.stringify(text));
-  console.log("hasComponentMarkers - result:", result);
   return result;
 };
 

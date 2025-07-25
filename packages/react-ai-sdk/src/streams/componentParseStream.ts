@@ -99,18 +99,67 @@ export function componentParseStream(): TransformStream<AssistantMessage, Assist
           
           // Early detection: Look for the start of component tags
           if (text.includes('[COMPONENT:') || text.includes('[COMPONENT')) {
-            console.log('Early component detection in text:', text.substring(text.indexOf('[COMPONENT'), text.indexOf('[COMPONENT') + 50));
             
-            // Check for complete component first
-            const completeComponentRegex = /\[COMPONENT:(\w+)\]\s*(\{.*?\})\s*\[\/COMPONENT\]/gs;
-            const completeMatch = completeComponentRegex.exec(text);
+            // Check if we have mixed complete and incomplete components
+            const structuredParts = parseStructuredResponse(text);
+            const hasCompleteComponents = structuredParts.some(p => p.type === "custom-component");
             
-            if (completeMatch) {
-              // Complete component - parse normally
+            if (hasCompleteComponents) {
+              // We have complete components, but check if there's also an incomplete one at the end
               hasComponents = true;
-              const structuredParts = parseStructuredResponse(text);
-              newParts.push(...structuredParts);
-              pendingComponent = null; // Clear any pending component
+              
+              // Find the last complete component's end position
+              const lastComponentEnd = text.lastIndexOf('[/COMPONENT]');
+              
+              if (lastComponentEnd !== -1) {
+                const remainingText = text.substring(lastComponentEnd + '[/COMPONENT]'.length);
+                
+                // Check if remaining text has a new incomplete component
+                if (remainingText.includes('[COMPONENT:')) {
+                  const partialTagRegex = /\[COMPONENT:(\w+)/g;
+                  const partialMatch = partialTagRegex.exec(remainingText);
+                  
+                  if (partialMatch && partialMatch[1]) {
+                    // Parse only the text up to the last complete component
+                    const textUpToLastComponent = text.substring(0, lastComponentEnd + '[/COMPONENT]'.length);
+                    const completeOnlyParts = parseStructuredResponse(textUpToLastComponent);
+                    newParts.push(...completeOnlyParts);
+                    
+                    // Add text between last component and new incomplete component (if any)
+                    const componentStartInRemaining = remainingText.indexOf('[COMPONENT:');
+                    const textBetween = remainingText.substring(0, componentStartInRemaining).trim();
+                    if (textBetween) {
+                      newParts.push({ type: "text", text: textBetween, status: { type: "complete", reason: "unknown" } });
+                    }
+                    
+                    // Then add loading component for the incomplete one
+                    pendingComponent = {
+                      componentName: partialMatch[1],
+                      buffer: text
+                    };
+                    
+                    newParts.push({
+                      type: "custom-component",
+                      componentName: partialMatch[1],
+                      props: {},
+                      originalText: undefined,
+                      status: { type: "running" }
+                    });
+                  } else {
+                    // Just complete components
+                    newParts.push(...structuredParts);
+                    pendingComponent = null;
+                  }
+                } else {
+                  // Just complete components
+                  newParts.push(...structuredParts);
+                  pendingComponent = null;
+                }
+              } else {
+                // Just complete components
+                newParts.push(...structuredParts);
+                pendingComponent = null;
+              }
             } else {
               // Incomplete component - check if we can extract component name
               const partialTagRegex = /\[COMPONENT:(\w+)/g;
@@ -119,7 +168,6 @@ export function componentParseStream(): TransformStream<AssistantMessage, Assist
               if (partialMatch && partialMatch[1]) {
                 // We have at least the component name
                 hasComponents = true;
-                console.log('Creating loading component for name:', partialMatch[1]);
                 
                 // Store pending component info
                 pendingComponent = {
@@ -146,7 +194,6 @@ export function componentParseStream(): TransformStream<AssistantMessage, Assist
               } else if (text.includes('[COMPONENT')) {
                 // Very early detection - just "[COMPONENT"
                 hasComponents = true;
-                console.log('Very early component detection, creating generic loading component');
                 
                 // Add text before the component start
                 const beforeComponent = text.substring(0, text.indexOf('[COMPONENT'));
@@ -172,7 +219,6 @@ export function componentParseStream(): TransformStream<AssistantMessage, Assist
           } else if (pendingComponent && text.includes('[/COMPONENT]')) {
             // We had a pending component and now we see the closing tag
             hasComponents = true;
-            console.log('Completing pending component with closing tag');
             
             // Try to parse the complete component from the combined buffer
             const completeText = pendingComponent.buffer + text;
@@ -204,7 +250,6 @@ export function componentParseStream(): TransformStream<AssistantMessage, Assist
           content: newParts,
         };
         
-        console.log('Emitting message with components:', updatedMessage);
         controller.enqueue(updatedMessage as AssistantMessage);
       } else {
         // No components found, pass through unchanged
