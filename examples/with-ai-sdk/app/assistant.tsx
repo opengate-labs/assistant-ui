@@ -53,7 +53,19 @@ const MenuItemsComponent = makeAssistantComponent({
 // Weather Widget Component
 const WeatherWidget = makeAssistantComponent({
   componentName: "WeatherWidget", 
-  render: ({ props }) => (
+  render: ({ props, status }) => {
+    if (status?.type === "rendering") {
+      return (
+        <div className="animate-pulse border rounded-lg p-4">
+          <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+          <div className="space-y-2">
+            <div className="h-3 bg-gray-200 rounded"></div>
+            <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+          </div>
+        </div>
+      );
+    }
+    return (
     <div className="border rounded-lg p-4 bg-gradient-to-r from-yellow-50 to-orange-50 my-2">
       <div className="flex items-center space-x-4">
         <div className="text-4xl">
@@ -74,13 +86,27 @@ const WeatherWidget = makeAssistantComponent({
         </div>
       </div>
     </div>
-  )
+    )
+  }
 });
 
 // Simple Chart Component
 const ChartComponent = makeAssistantComponent({
   componentName: "Chart",
-  render: ({ props }) => (
+  render: ({ props, status }) => {
+    if (status?.type === "rendering") {
+      return (
+        <div className="animate-pulse border rounded-lg p-4">
+          <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+          <div className="space-y-2">
+            <div className="h-3 bg-gray-200 rounded"></div>
+            <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
     <div className="border rounded-lg p-4 bg-gradient-to-r from-purple-50 to-pink-50 my-2">
       <h3 className="text-lg font-semibold text-gray-800 mb-3">
         {props.title || "Chart"}
@@ -104,7 +130,10 @@ const ChartComponent = makeAssistantComponent({
         ))}
       </div>
     </div>
-  )
+
+    )
+
+  }
 });
 
 export const Assistant = () => {
