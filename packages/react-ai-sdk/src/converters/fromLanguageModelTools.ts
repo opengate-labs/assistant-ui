@@ -1,5 +1,5 @@
 import { LanguageModelV1FunctionTool } from "@ai-sdk/provider";
-import { Tool } from "@assistant-ui/react";
+import { Tool } from "@opengate-labs/assistant-ui-react";
 
 /**
  * @deprecated This is an internal API and may change without notice.

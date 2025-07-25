@@ -1,13 +1,13 @@
 "use client";
 
 import type { useChat } from "@ai-sdk/react";
-import { useExternalStoreRuntime } from "@assistant-ui/react";
+import { useExternalStoreRuntime } from "@opengate-labs/assistant-ui-react";
 import { useInputSync } from "../utils/useInputSync";
 import { sliceMessagesUntil } from "../utils/sliceMessagesUntil";
 import { toCreateMessage } from "../utils/toCreateMessage";
 import { vercelAttachmentAdapter } from "../utils/vercelAttachmentAdapter";
 import { getVercelAIMessages } from "../getVercelAIMessages";
-import { ExternalStoreAdapter } from "@assistant-ui/react";
+import { ExternalStoreAdapter } from "@opengate-labs/assistant-ui-react";
 import { useState } from "react";
 import { generateId } from "@ai-sdk/ui-utils";
 import { AISDKMessageConverter } from "../utils/convertMessage";

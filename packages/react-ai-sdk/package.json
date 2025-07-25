@@ -1,5 +1,5 @@
 {
-  "name": "@assistant-ui/react-ai-sdk",
+  "name": "@opengate-labs/assistant-ui-react-ai-sdk",
   "version": "0.10.16",
   "license": "MIT",
   "type": "module",
@@ -34,7 +34,7 @@
     "zustand": "^5.0.6"
   },
   "peerDependencies": {
-    "@assistant-ui/react": "^0.10.29",
+    "@opengate-labs/assistant-ui-react": "^0.10.29",
     "@types/react": "*",
     "react": "^18 || ^19 || ^19.0.0-rc"
   },
@@ -44,8 +44,8 @@
     }
   },
   "devDependencies": {
-    "@assistant-ui/react": "workspace:*",
-    "@assistant-ui/x-buildutils": "workspace:*",
+    "@opengate-labs/assistant-ui-react": "workspace:*",
+    "@opengate-labs/assistant-ui-x-buildutils": "workspace:*",
     "@types/node": "^24.0.4",
     "@types/react": "^19.1.8",
     "eslint": "^9",

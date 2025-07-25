@@ -10,7 +10,7 @@ import {
   TextMessagePart,
   ThreadMessage,
   ToolCallMessagePart,
-} from "@assistant-ui/react";
+} from "@opengate-labs/assistant-ui-react";
 
 const assistantMessageSplitter = () => {
   const stash: LanguageModelV1Message[] = [];

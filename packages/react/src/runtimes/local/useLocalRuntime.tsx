@@ -6,8 +6,8 @@ import { LocalRuntimeCore } from "./LocalRuntimeCore";
 import type { LocalRuntimeOptions } from "./LocalRuntimeOptions";
 import { useRuntimeAdapters } from "../adapters/RuntimeAdapterProvider";
 import { useRemoteThreadListRuntime } from "../remote-thread-list/useRemoteThreadListRuntime";
-import { useCloudThreadListAdapter } from "../remote-thread-list/adapter/cloud";
 import { AssistantRuntimeImpl } from "../../internal";
+import { InMemoryThreadListAdapter } from "../remote-thread-list/adapter/in-memory";
 
 export const useLocalThreadRuntime = (
   adapter: ChatModelAdapter,
@@ -49,13 +49,12 @@ export const useLocalThreadRuntime = (
 
 export const useLocalRuntime = (
   adapter: ChatModelAdapter,
-  { cloud, ...options }: LocalRuntimeOptions = {},
+  options: LocalRuntimeOptions = {},
 ) => {
-  const cloudAdapter = useCloudThreadListAdapter({ cloud });
   return useRemoteThreadListRuntime({
     runtimeHook: function RuntimeHook() {
       return useLocalThreadRuntime(adapter, options);
     },
-    adapter: cloudAdapter,
+    adapter: new InMemoryThreadListAdapter(),
   });
 };

@@ -1,4 +1,4 @@
-import type { AppendMessage, ExternalStoreAdapter } from "@assistant-ui/react";
+import type { AppendMessage, ExternalStoreAdapter } from "@opengate-labs/assistant-ui-react";
 import type { VercelRSCMessage } from "./VercelRSCMessage";
 
 type RSCMessageConverter<T> = {

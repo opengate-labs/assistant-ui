@@ -1,4 +1,4 @@
-import { AppendMessage } from "@assistant-ui/react";
+import { AppendMessage } from "@opengate-labs/assistant-ui-react";
 import { CreateMessage } from "@ai-sdk/ui-utils";
 
 export const toCreateMessage = async (

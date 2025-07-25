@@ -1,8 +1,8 @@
 "use client";
 
-import { AssistantRuntimeProvider, makeAssistantComponent } from "@assistant-ui/react";
+import { AssistantRuntimeProvider, makeAssistantComponent } from "@opengate-labs/assistant-ui-react";
 import { Thread } from "@/components/assistant-ui/thread";
-import { useChatRuntime } from "@assistant-ui/react-ai-sdk";
+import { useChatRuntime } from "@opengate-labs/assistant-ui-react-ai-sdk";
 
 // Example Menu Component
 const MenuItemsComponent = makeAssistantComponent({

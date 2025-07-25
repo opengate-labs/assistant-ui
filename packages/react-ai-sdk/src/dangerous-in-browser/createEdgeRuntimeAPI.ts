@@ -9,7 +9,7 @@ import { toLanguageModelMessages } from "../converters/toLanguageModelMessages";
 import { toLanguageModelTools } from "../converters/toLanguageModelTools";
 import { AssistantStreamChunk } from "assistant-stream";
 import { LanguageModelV1StreamDecoder } from "assistant-stream/ai-sdk";
-import { ThreadMessage, Tool } from "@assistant-ui/react";
+import { ThreadMessage, Tool } from "@opengate-labs/assistant-ui-react";
 
 export type LanguageModelV1CallSettings = {
   maxTokens?: number;

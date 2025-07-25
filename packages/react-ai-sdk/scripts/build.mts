@@ -1,3 +1,3 @@
-import { Build } from "@assistant-ui/x-buildutils";
+import { Build } from "@opengate-labs/assistant-ui-x-buildutils";
 
 await Build.start().transpileTypescript();

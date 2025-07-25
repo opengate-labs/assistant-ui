@@ -1,13 +1,13 @@
 "use client";
 
-import "@assistant-ui/react-markdown/styles/dot.css";
+import "@opengate-labs/assistant-ui-react-markdown/styles/dot.css";
 
 import {
   CodeHeaderProps,
   MarkdownTextPrimitive,
   unstable_memoizeMarkdownComponents as memoizeMarkdownComponents,
   useIsMarkdownCodeBlock,
-} from "@assistant-ui/react-markdown";
+} from "@opengate-labs/assistant-ui-react-markdown";
 import remarkGfm from "remark-gfm";
 import { FC, memo, useState } from "react";
 import { CheckIcon, CopyIcon } from "lucide-react";
@@ -63,7 +63,6 @@ const useCopyToClipboard = ({
 
   return { isCopied, copyToClipboard };
 };
-
 const defaultComponents = memoizeMarkdownComponents({
   h1: ({ className, ...props }) => (
     <h1
@@ -217,3 +216,4 @@ const defaultComponents = memoizeMarkdownComponents({
   },
   CodeHeader,
 });
+

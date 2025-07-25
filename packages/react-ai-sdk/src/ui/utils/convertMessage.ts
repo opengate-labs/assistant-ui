@@ -7,7 +7,7 @@ import {
   type CompleteAttachment,
   type SourceMessagePart,
   type FileMessagePart,
-} from "@assistant-ui/react";
+} from "@opengate-labs/assistant-ui-react";
 
 const convertParts = (message: Message) => {
   if (message.parts && message.parts.length > 0) {

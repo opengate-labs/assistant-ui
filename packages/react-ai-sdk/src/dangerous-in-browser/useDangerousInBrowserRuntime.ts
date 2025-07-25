@@ -9,7 +9,7 @@ import {
   INTERNAL,
   LocalRuntimeOptions,
   useLocalRuntime,
-} from "@assistant-ui/react";
+} from "@opengate-labs/assistant-ui-react";
 
 const { splitLocalRuntimeOptions } = INTERNAL;
 

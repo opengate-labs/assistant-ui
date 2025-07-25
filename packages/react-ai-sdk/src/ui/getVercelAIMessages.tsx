@@ -1,7 +1,7 @@
 import {
   getExternalStoreMessages,
   type ThreadMessage,
-} from "@assistant-ui/react";
+} from "@opengate-labs/assistant-ui-react";
 import type { Message } from "@ai-sdk/ui-utils";
 
 export const getVercelAIMessages = (message: ThreadMessage) => {

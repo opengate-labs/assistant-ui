@@ -1,5 +1,5 @@
 {
-  "name": "@assistant-ui/x-buildutils",
+  "name": "@opengate-labs/assistant-ui-x-buildutils",
   "version": "0.0.1",
   "private": true,
   "main": "./src/index.ts",

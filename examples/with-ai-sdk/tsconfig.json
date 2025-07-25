@@ -1,5 +1,5 @@
 {
-  "extends": "@assistant-ui/x-buildutils/ts/base",
+  "extends": "@opengate-labs/assistant-ui-x-buildutils/ts/base",
   "compilerOptions": {
     "target": "ES6",
     "module": "ESNext",
@@ -15,7 +15,7 @@
     "paths": {
       "@/*": ["./*"],
       "@assistant-ui/*": ["../../packages/*/src"],
-      "@assistant-ui/react/*": ["../../packages/react/src/*"],
+      "@opengate-labs/assistant-ui-react/*": ["../../packages/react/src/*"],
       "assistant-stream": ["../../packages/assistant-stream/src"],
       "assistant-stream/*": ["../../packages/assistant-stream/src/*"]
     }

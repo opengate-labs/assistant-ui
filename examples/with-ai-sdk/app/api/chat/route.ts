@@ -1,5 +1,5 @@
 import { openai } from "@ai-sdk/openai";
-import { frontendTools } from "@assistant-ui/react-ai-sdk";
+import { frontendTools } from "@opengate-labs/assistant-ui-react-ai-sdk";
 import { streamText } from "ai";
 import { z } from "zod";
 

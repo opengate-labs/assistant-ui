@@ -10,7 +10,7 @@ import {
   ThreadMessage,
   Tool,
   useLocalRuntime,
-} from "@assistant-ui/react";
+} from "@opengate-labs/assistant-ui-react";
 import { z } from "zod";
 import zodToJsonSchema from "zod-to-json-schema";
 import { JSONSchema7 } from "json-schema";

@@ -1,6 +1,6 @@
 "use client";
 
-import { INTERNAL, useMessagePartText } from "@assistant-ui/react";
+import { INTERNAL, useMessagePartText } from "@opengate-labs/assistant-ui-react";
 import {
   ComponentRef,
   ElementType,

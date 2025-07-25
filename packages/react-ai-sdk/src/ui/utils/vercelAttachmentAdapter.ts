@@ -1,4 +1,4 @@
-import { AttachmentAdapter } from "@assistant-ui/react";
+import { AttachmentAdapter } from "@opengate-labs/assistant-ui-react";
 import { generateId } from "@ai-sdk/ui-utils";
 
 export const vercelAttachmentAdapter: AttachmentAdapter = {

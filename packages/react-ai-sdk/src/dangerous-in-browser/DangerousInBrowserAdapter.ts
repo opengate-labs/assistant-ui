@@ -3,7 +3,7 @@ import {
   AssistantMessageAccumulator,
   unstable_toolResultStream,
 } from "assistant-stream";
-import { ChatModelAdapter, ChatModelRunOptions } from "@assistant-ui/react";
+import { ChatModelAdapter, ChatModelRunOptions } from "@opengate-labs/assistant-ui-react";
 import {
   CreateEdgeRuntimeAPIOptions,
   getEdgeRuntimeStream,

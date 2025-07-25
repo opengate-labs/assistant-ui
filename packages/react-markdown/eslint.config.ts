@@ -1,1 +1,1 @@
-export { default } from "@assistant-ui/x-buildutils/eslint";
+export { default } from "@opengate-labs/assistant-ui-x-buildutils/eslint";

@@ -4,7 +4,7 @@ import {
   ComposerPrimitive,
   MessagePrimitive,
   ThreadPrimitive,
-} from "@assistant-ui/react";
+} from "@opengate-labs/assistant-ui-react";
 import type { FC } from "react";
 import {
   ArrowDownIcon,

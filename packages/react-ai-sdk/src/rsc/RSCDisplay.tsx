@@ -3,7 +3,7 @@ import {
   useThread,
   useMessage,
   getExternalStoreMessage,
-} from "@assistant-ui/react";
+} from "@opengate-labs/assistant-ui-react";
 import {
   RSCThreadExtras,
   symbolInternalRSCExtras,

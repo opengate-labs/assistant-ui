@@ -1,5 +1,5 @@
 {
-  "name": "@assistant-ui/react",
+  "name": "@opengate-labs/assistant-ui-react",
   "description": "TypeScript/React library for AI Chat",
   "keywords": [
     "radix-ui",
@@ -55,7 +55,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "assistant-cloud": "workspace:*",
     "@radix-ui/primitive": "^1.1.2",
     "@radix-ui/react-compose-refs": "^1.1.2",
     "@radix-ui/react-context": "^1.1.2",
@@ -87,7 +86,7 @@
     }
   },
   "devDependencies": {
-    "@assistant-ui/x-buildutils": "workspace:*",
+    "@opengate-labs/assistant-ui-x-buildutils": "workspace:*",
     "@stryker-mutator/core": "^9.0.1",
     "@stryker-mutator/vitest-runner": "^9.0.1",
     "@types/json-schema": "^7.0.15",

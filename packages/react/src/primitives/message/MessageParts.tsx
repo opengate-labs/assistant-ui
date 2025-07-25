@@ -301,6 +301,16 @@ const EnhancedTextComponent = () => {
   );
 };
 
+// Simple text component for empty parts fallback (doesn't use custom component detection)
+const SimpleTextComponent = () => (
+  <p style={{ whiteSpace: "pre-line" }}>
+    <MessagePartPrimitiveText />
+    <MessagePartPrimitiveInProgress>
+      <span style={{ fontFamily: "revert" }}>{" \u25CF"}</span>
+    </MessagePartPrimitiveInProgress>
+  </p>
+);
+
 const defaultComponents = {
   Text: EnhancedTextComponent,
   Reasoning: EnhancedTextComponent, // Also use enhanced component for reasoning
@@ -443,7 +453,7 @@ const EmptyPartsImpl: FC<MessagePartComponentProps> = ({ components }) => {
   return (
     <EmptyPartFallback
       status={status}
-      component={components?.Text ?? defaultComponents.Text}
+      component={components?.Text ?? SimpleTextComponent}
     />
   );
 };
