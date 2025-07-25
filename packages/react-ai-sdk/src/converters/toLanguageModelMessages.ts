@@ -167,6 +167,15 @@ export function toLanguageModelMessages(
               splitter.addToolCallPart(part);
               break;
             }
+            case "custom-component": {
+              // Convert component back to its original text representation
+              const componentText = `[COMPONENT:${part.componentName}]\n${JSON.stringify(part.props, null, 2)}\n[/COMPONENT]`;
+              splitter.addTextMessagePart({
+                type: "text",
+                text: componentText,
+              });
+              break;
+            }
             default: {
               const unhandledType: never = type;
               throw new Error(`Unhandled message part type: ${unhandledType}`);

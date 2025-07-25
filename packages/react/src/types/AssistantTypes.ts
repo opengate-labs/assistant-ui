@@ -43,6 +43,13 @@ export type Unstable_AudioMessagePart = {
   };
 };
 
+export type CustomComponentMessagePart = {
+  readonly type: "custom-component";
+  readonly componentName: string;
+  readonly props: ReadonlyJSONObject;
+  readonly originalText?: string;
+};
+
 export type ToolCallMessagePart<
   TArgs = ReadonlyJSONObject,
   TResult = unknown,
@@ -69,7 +76,8 @@ export type ThreadAssistantMessagePart =
   | ReasoningMessagePart
   | ToolCallMessagePart
   | SourceMessagePart
-  | FileMessagePart;
+  | FileMessagePart
+  | CustomComponentMessagePart;
 
 type MessageCommonProps = {
   readonly id: string;

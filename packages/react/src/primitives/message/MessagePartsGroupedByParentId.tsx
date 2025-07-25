@@ -275,6 +275,11 @@ const MessagePartComponent: FC<MessagePartComponentProps> = ({
     case "audio":
       return <Audio {...part} />;
 
+    case "custom-component":
+      // Custom components are handled by the main MessageParts component
+      // This grouped view doesn't support custom components yet
+      return null;
+
     default:
       const unhandledType: never = type;
       throw new Error(`Unknown message part type: ${unhandledType}`);

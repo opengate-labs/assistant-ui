@@ -18,6 +18,7 @@ import {
   ReasoningMessagePart,
   SourceMessagePart,
   ThreadStep,
+  CustomComponentMessagePart,
 } from "../../types/AssistantTypes";
 import { ReadonlyJSONObject, ReadonlyJSONValue } from "assistant-stream/utils";
 
@@ -32,6 +33,7 @@ export type ThreadMessageLike = {
         | ImageMessagePart
         | FileMessagePart
         | Unstable_AudioMessagePart
+        | CustomComponentMessagePart
         | {
             readonly type: "tool-call";
             readonly toolCallId?: string;
@@ -102,6 +104,7 @@ export const fromThreadMessageLike = (
 
               case "file":
               case "source":
+              case "custom-component":
                 return part;
 
               case "tool-call": {
@@ -162,7 +165,7 @@ export const fromThreadMessageLike = (
               return part;
 
             default: {
-              const unhandledType: "tool-call" | "reasoning" | "source" = type;
+              const unhandledType: "tool-call" | "reasoning" | "source" | "custom-component" = type;
               throw new Error(
                 `Unsupported user message part type: ${unhandledType}`,
               );

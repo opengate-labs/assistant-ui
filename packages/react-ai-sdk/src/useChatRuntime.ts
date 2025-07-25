@@ -19,6 +19,7 @@ import {
   DataStreamDecoder,
   unstable_toolResultStream,
 } from "assistant-stream";
+import { componentParseStream } from "./streams/componentParseStream";
 import { asAsyncIterableStream } from "assistant-stream/utils";
 
 const { splitLocalRuntimeOptions } = INTERNAL;
@@ -129,10 +130,13 @@ class ChatRuntimeAdapter implements ChatModelAdapter {
         throw new Error("Response body is null");
       }
 
-      const stream = result.body
+      let stream = result.body
         .pipeThrough(new DataStreamDecoder())
         .pipeThrough(unstable_toolResultStream(context.tools, abortSignal))
         .pipeThrough(new AssistantMessageAccumulator());
+
+      // Add component parsing stream
+      stream = stream.pipeThrough(componentParseStream());
 
       yield* asAsyncIterableStream(stream);
 

@@ -10,6 +10,7 @@ import {
 } from "react";
 import { AssistantContext } from "../react/AssistantContext";
 import { makeAssistantToolUIsStore } from "../stores/AssistantToolUIs";
+import { makeAssistantComponentsStore } from "../stores/AssistantComponents";
 import { ThreadRuntimeProvider } from "./ThreadRuntimeProvider";
 import { AssistantRuntime } from "../../api/AssistantRuntime";
 import { create } from "zustand";
@@ -43,6 +44,10 @@ const useAssistantToolUIsStore = () => {
   return useMemo(() => makeAssistantToolUIsStore(), []);
 };
 
+const useAssistantComponentsStore = () => {
+  return useMemo(() => makeAssistantComponentsStore(), []);
+};
+
 const getRenderComponent = (runtime: AssistantRuntime) => {
   return (runtime as { _core?: AssistantRuntimeCore })._core?.RenderComponent;
 };
@@ -52,9 +57,11 @@ export const AssistantRuntimeProviderImpl: FC<
 > = ({ children, runtime }) => {
   const useAssistantRuntime = useAssistantRuntimeStore(runtime);
   const useToolUIs = useAssistantToolUIsStore();
+  const useComponents = useAssistantComponentsStore();
   const [context] = useState(() => {
     return {
       useToolUIs,
+      useComponents,
       useAssistantRuntime,
     };
   });

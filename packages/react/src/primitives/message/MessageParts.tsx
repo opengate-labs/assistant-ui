@@ -12,6 +12,7 @@ import {
   useMessagePart,
   useMessagePartRuntime,
   useToolUIs,
+  useComponents,
 } from "../../context";
 import {
   useMessage,
@@ -20,6 +21,9 @@ import {
 import { MessagePartRuntimeProvider } from "../../context/providers/MessagePartRuntimeProvider";
 import { MessagePartPrimitiveText } from "../messagePart/MessagePartText";
 import { MessagePartPrimitiveImage } from "../messagePart/MessagePartImage";
+import { CustomComponentMessagePartProps } from "../../context/stores/AssistantComponents";
+import { parseComponentMarkers, hasComponentMarkers } from "../../utils/parseComponentMarkers";
+import { useMessagePartText } from "../messagePart/useMessagePartText";
 import type {
   Unstable_AudioMessagePartComponent,
   EmptyMessagePartComponent,
@@ -189,6 +193,17 @@ export namespace MessagePrimitiveParts {
           ToolGroup?: ComponentType<
             PropsWithChildren<{ startIndex: number; endIndex: number }>
           >;
+          /** Configuration for custom component rendering */
+          custom_components?:
+            | {
+                /** Map of component names to their specific components */
+                by_name?:
+                  | Record<string, ComponentType<import("../../context/stores/AssistantComponents").CustomComponentMessagePartProps> | undefined>
+                  | undefined;
+                /** Fallback component for unregistered custom components */
+                Fallback?: ComponentType<import("../../context/stores/AssistantComponents").CustomComponentMessagePartProps> | undefined;
+              }
+            | undefined;
         }
       | undefined;
   };
@@ -205,16 +220,90 @@ const ToolUIDisplay = ({
   return <Render {...props} />;
 };
 
-const defaultComponents = {
-  Text: () => (
+const CustomComponentDisplay = ({
+  Fallback,
+  ...props
+}: {
+  Fallback: ComponentType<CustomComponentMessagePartProps> | undefined;
+} & CustomComponentMessagePartProps) => {
+  const Render = useComponents((s:any) => s.getComponent(props.componentName)) ?? Fallback;
+  
+  if (!Render) {
+    // Fallback to original text if available and no component found
+    if (props.originalText) {
+      return (
+        <p style={{ whiteSpace: "pre-line" }}>
+          {props.originalText}
+        </p>
+      );
+    }
+    return null;
+  }
+  
+  return <Render {...props} />;
+};
+
+// Enhanced Text component that detects and renders custom components
+const EnhancedTextComponent = () => {
+  const textPart = useMessagePartText();
+  // useMessagePartText() already validates it's text/reasoning and has .text property
+  const text = (textPart as any).text;
+  
+  // Get message context to see the role
+  const message = useMessage();
+  
+  // Debug logging
+  console.log("EnhancedTextComponent - role:", message.role, "text:", text);
+  console.log("EnhancedTextComponent - hasComponentMarkers:", hasComponentMarkers(text));
+  
+  // Check if text contains component markers
+  if (hasComponentMarkers(text)) {
+    const parts = parseComponentMarkers(text);
+    
+    return (
+      <div>
+        {parts.map((part, index) => {
+          if (part.type === "custom-component") {
+            return (
+              <CustomComponentDisplay
+                key={index}
+                componentName={part.componentName}
+                props={part.props}
+                originalText={part.originalText}
+                status={{ type: "complete" }}
+                Fallback={undefined}
+              />
+            );
+          } else {
+            // Regular text part - part here is from parseComponentMarkers
+            return (
+              <p key={index} style={{ whiteSpace: "pre-line" }}>
+                {(part as any).text}
+              </p>
+            );
+          }
+        })}
+        <MessagePartPrimitiveInProgress>
+          <span style={{ fontFamily: "revert" }}>{" \u25CF"}</span>
+        </MessagePartPrimitiveInProgress>
+      </div>
+    );
+  }
+  
+  // No component markers - render normally
+  return (
     <p style={{ whiteSpace: "pre-line" }}>
       <MessagePartPrimitiveText />
       <MessagePartPrimitiveInProgress>
         <span style={{ fontFamily: "revert" }}>{" \u25CF"}</span>
       </MessagePartPrimitiveInProgress>
     </p>
-  ),
-  Reasoning: () => null,
+  );
+};
+
+const defaultComponents = {
+  Text: EnhancedTextComponent,
+  Reasoning: EnhancedTextComponent, // Also use enhanced component for reasoning
   Source: () => null,
   Image: () => <MessagePartPrimitiveImage />,
   File: () => null,
@@ -235,19 +324,37 @@ const MessagePartComponent: FC<MessagePartComponentProps> = ({
     File = defaultComponents.File,
     Unstable_Audio: Audio = defaultComponents.Unstable_Audio,
     tools = {},
+    custom_components = {},
   } = {},
 }) => {
   const MessagePartRuntime = useMessagePartRuntime();
 
   const part = useMessagePart();
+  const message = useMessage();
 
   const type = part.type;
+  
+  // Debug all message parts
+  console.log("MessagePartComponent - role:", message.role, "type:", type, "part:", part);
   if (type === "tool-call") {
     const addResult = (result: any) => MessagePartRuntime.addToolResult(result);
     if ("Override" in tools)
       return <tools.Override {...part} addResult={addResult} />;
     const Tool = tools.by_name?.[part.toolName] ?? tools.Fallback;
     return <ToolUIDisplay {...part} Fallback={Tool} addResult={addResult} />;
+  }
+
+  if (type === "custom-component") {
+    const CustomComponent = custom_components.by_name?.[part.componentName] ?? custom_components.Fallback;
+    return (
+      <CustomComponentDisplay 
+        componentName={part.componentName}
+        props={part.props}
+        originalText={part.originalText}
+        status={{ type: "complete" }}
+        Fallback={CustomComponent}
+      />
+    );
   }
 
   if (part.status.type === "requires-action")

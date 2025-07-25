@@ -3,6 +3,12 @@ export {
   type AssistantToolUI,
   makeAssistantToolUI,
 } from "./makeAssistantToolUI";
+export {
+  type AssistantComponent,
+  makeAssistantComponent,
+  type AssistantComponentProps,
+} from "./makeAssistantComponent";
+export { useAssistantComponent } from "./useAssistantComponent";
 export { useAssistantInstructions } from "./useAssistantInstructions";
 export { useAssistantTool, type AssistantToolProps } from "./useAssistantTool";
 export {

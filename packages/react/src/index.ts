@@ -5,5 +5,6 @@ export * from "./model-context";
 export * from "./primitives";
 export * from "./runtimes";
 export * from "./types";
+export { parseComponentMarkers, hasComponentMarkers, extractComponentNames } from "./utils/parseComponentMarkers";
 
 export * as INTERNAL from "./internal";

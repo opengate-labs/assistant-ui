@@ -56,6 +56,7 @@ const updatePartForPath = (
   };
 };
 
+
 const handlePartStart = (
   message: AssistantMessage,
   chunk: AssistantStreamChunk & { readonly type: "part-start" },
